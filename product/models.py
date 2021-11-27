@@ -3,11 +3,12 @@ from PIL import Image
 
 from django.core.files import File
 from django.db import models
+from django.utils.text import slugify
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         ordering = ('name',)
@@ -18,11 +19,15 @@ class Category(models.Model):
     def get_absolute_url(self):
         return f'/{self.slug}/'
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    slug = models.SlugField
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
@@ -34,6 +39,10 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.slug}/'
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
 
     def get_image(self):
         if self.image:
@@ -57,7 +66,7 @@ class Product(models.Model):
         img.thumbnail(size)
 
         thumb_io = BytesIO()
-        img.save(thumb_io, 'JPEG', quality=85)
+        img.save(thumb_io, 'JPEG', quality=80)
 
         thumbnail = File(thumb_io, name=image.name)
 
