@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-!ysh))-kp9=gj2vv+q0vr+boh@0n375gu1n*bqqjlvuis)%60#
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+STRIPE_SECRET_KEY = 'pk_test_51K2ahaJGoa2ZtuU8WKyqfd7HWAW9GqteVNCikjoZ5TpJCmZUHzyqrviN9QbXIygCIopz3DF680HOmhrgeqW69tMi0002pDKr4h'
 
 # Application definition
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'djoser',
 
     'product',
+    'order'
 ]
 
 MIDDLEWARE = [
@@ -131,3 +134,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=360),
+}
