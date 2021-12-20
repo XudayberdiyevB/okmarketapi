@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,14 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!ysh))-kp9=gj2vv+q0vr+boh@0n375gu1n*bqqjlvuis)%60#'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-STRIPE_SECRET_KEY = 'pk_test_51K2ahaJGoa2ZtuU8WKyqfd7HWAW9GqteVNCikjoZ5TpJCmZUHzyqrviN9QbXIygCIopz3DF680HOmhrgeqW69tMi0002pDKr4h'
+STRIPE_SECRET_KEY = str(os.getenv('STRIPE_SECRET_KEY'))
 
 # Application definition
 
